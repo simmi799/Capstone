@@ -1,92 +1,69 @@
 QA Automation Capstone: Project Presentation
 
-Welcome to the Capstone Project Presentation! This document serves as a high-level overview of the QA testing strategy, the application being tested, and the specific goals of this project.
+Welcome to the Capstone Project Presentation. This document provides a simple overview of the testing strategy, the website being tested, and the main goals of this project.
 
-1. Website Details (The "Application Under Test")
+1. The Website: MockMart E-Commerce
 
-Application Name: MockMart E-Commerce
-Type: Custom-Built Web Application
-
-A Self-Made Testing Ground
-
-This website was custom-built specifically for this capstone project. Creating our own platform provides a stable testing environment where we have complete control over the application, ensuring our tests do not unexpectedly break due to live updates.
+A Custom Testing Environment
+For this project, we are testing a custom-built e-commerce website called MockMart. Instead of testing a public website that might change unexpectedly, building our own site gives us a stable and controlled environment.
 
 What exactly is being tested?
+The testing focuses on the everyday experience of an online shopper:
 
-The testing framework targets key aspects of the user experience:
+Can a user successfully log in and log out?
 
-Functional Workflows: Ensuring users can successfully navigate from login to checkout.
+Do items stay in the shopping cart?
 
-UI/UX Responsiveness: Testing the layout across different screen sizes.
+Does the website look correct on different screen sizes?
 
-Form Validations: Checking mandatory fields and error messages when users input incorrect data.
+Do forms show the right error messages when a user types something wrong?
 
-Data Verification: Ensuring the correct information is displayed and processed throughout the shopping journey.
+2. Project Goals
 
-2. Project Objectives
+The main purpose of this capstone is to demonstrate a complete and organized software testing process.
 
-The primary goal of this capstone is to demonstrate a comprehensive Quality Assurance testing cycle.
+Thorough Coverage: Execute a total of 120 test cases to make sure the core shopping features work as expected.
 
-|
+Organization: Keep the test steps and test data neatly separated so they are easy to read and update.
 
-| Objective | Description |
-| End-to-End Coverage | Execute 120 test cases across 8 core application services. |
-| Maintainability | Structure test files logically so they are easy to read, update, and manage over time. |
-| Reliability | Create stable tests that provide accurate, consistent feedback on the application's health. |
-| Defect Prevention | Proactively identify user interface bugs and logical workflow errors. |
+Bug Prevention: Proactively find layout issues, broken links, and checkout errors before a real customer experiences them.
 
-3. Application Modules
+3. Areas of Testing (The 8 Modules)
 
-The e-commerce application is divided into 8 distinct services. Each acts as a standalone testing module.
+The website is divided into 8 distinct areas. We will test each area to make sure the entire platform functions smoothly from start to finish.
 
-| Module Name | Core Functionality Tested |
-| Authentication | User registration, login validation, and logout functionality. |
-| Product | Catalog display, product details, and search functionality. |
-| Cart | Adding or removing items, updating quantities, and price calculations. |
-| Address/Shipping | Address formatting, zip code validation, and shipping costs. |
-| User Profile | Updating personal information and changing passwords. |
-| Customer Support | Contact form submission and required field validation. |
-| API Internal | Verifying the backend successfully sends and receives data. |
-| Payment | Validating credit card number formats and checking success/failure messages. |
+Authentication: Registering new accounts and logging in safely.
 
-4. Framework Folder Structure
+Product: Viewing the product catalog, searching, and checking prices.
 
-The project uses a clean, simple directory structure to keep test logic and data organized.
+Cart: Adding items, removing items, and calculating the final price.
 
-QA-Capstone-Framework/
- ├── pages/              (Organized views of the website pages)
- ├── tests/              (The actual step-by-step test scripts)
- ├── test-data/          (Mock information used during testing, like sample users)
- ├── utils/              (Helper functions to keep tests clean)
- └── reports/            (Auto-generated documents showing pass/fail results)
+Address/Shipping: Entering delivery details and validating zip codes.
 
+User Profile: Updating personal account information and changing passwords.
 
+Customer Support: Submitting the "Contact Us" form correctly.
 
-5. Estimated Test Case Average
+Internal Communications: Ensuring the website talks to its database correctly behind the scenes.
 
-To ensure comprehensive testing, the scope is evenly balanced across the application.
+Payment: Checking that credit card forms require the correct number formats.
 
-Total Test Cases Required: 120 Minimum
+4. Test Case Breakdown
 
-Total Microservices: 8
+To ensure we test the website evenly, the workload is perfectly balanced across all 8 areas.
 
-Average Distribution: 15 Test Cases per service
+Total Test Cases: 120
 
-Distribution Breakdown:
+Test Cases per Area: 15
 
-| Service Module | Positive Scenarios | Negative Scenarios | Boundary/Edge Cases | Total |
-| Authentication | 5 | 7 | 3 | 15 |
-| Product | 8 | 4 | 3 | 15 |
-| Cart | 6 | 6 | 3 | 15 |
-| Shipping | 5 | 7 | 3 | 15 |
-| User Profile | 7 | 5 | 3 | 15 |
-| Customer Support | 6 | 6 | 3 | 15 |
-| API Internal | 10 | 5 | 0 | 15 |
-| Payment | 4 | 8 | 3 | 15 |
-| GRAND TOTAL |  |  |  | 120 |
+For each area, the 15 tests are divided into three types of scenarios:
 
-6. Conclusion
+Normal Use: Testing what happens when a user does everything right (e.g., entering a correct password).
 
-This Capstone Project represents a full Quality Assurance lifecycle. By utilizing a custom-made e-commerce application and a rigorous matrix of 120 test cases, this framework ensures that the MockMart platform is robust and reliable.
+Incorrect Use: Testing what happens when a user makes a mistake (e.g., leaving a required field blank).
 
-The successful execution of this suite showcases a clear understanding of testing principles, logical test organization, and effective quality reporting.
+Extreme Cases: Testing the limits of the website (e.g., typing an unusually long address).
+
+5. Conclusion
+
+This Capstone Project represents a full Quality Assurance cycle. By using a custom e-commerce website and running a carefully planned suite of 120 tests, this project proves that we can thoroughly evaluate a platform and ensure it is reliable and user-friendly.
