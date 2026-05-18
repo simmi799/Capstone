@@ -1,87 +1,70 @@
-🌟 QA Automation Capstone: Project Presentation
+QA Automation Capstone: Project Presentation
 
-Welcome to the Capstone Project Presentation! This document serves as a high-level overview of the automation strategy, the application under test, and the specific goals of this QA initiative.
+Welcome to the Capstone Project Presentation! This document serves as a high-level overview of the QA testing strategy, the application being tested, and the specific goals of this project.
 
-🏗️ 1. Website Details (The "Application Under Test")
+1. Website Details (The "Application Under Test")
 
-Application Name: MockMart E-Commerce (Custom Built)
-Architecture: HTML5, CSS3, Vanilla JavaScript, Mock REST APIs
+Application Name: MockMart E-Commerce
+Type: Custom-Built Web Application
 
-🛠️ A Self-Made Testing Ground
+A Self-Made Testing Ground
 
-Unlike testing a public production website where backend changes or A/B testing can break automation scripts, this website was custom-built from the ground up specifically for this capstone project. * Why self-made? It provides absolute control over the DOM elements, locators (IDs, classes), and application state.
+This website was custom-built specifically for this capstone project. Creating our own platform provides a stable testing environment where we have complete control over the application, ensuring our tests do not unexpectedly break due to live updates.
 
-Design: It mimics a modern, real-world E-Commerce platform, complete with dynamic rendering, state management (Local Storage/Session Storage), and asynchronous API simulations.
+What exactly is being tested?
 
-🔍 What exactly is being tested? (High-Level Scope)
-
-Instead of just clicking buttons, the automation framework targets specific software quality pillars:
+The testing framework targets key aspects of the user experience:
 
 Functional Workflows: Ensuring users can successfully navigate from login to checkout.
 
-State Management: Verifying the cart retains items after page reloads.
+UI/UX Responsiveness: Testing the layout across different screen sizes.
 
-UI/UX Responsiveness: Testing layout stability across simulated device viewpoints.
+Form Validations: Checking mandatory fields and error messages when users input incorrect data.
 
-Form Validations: Checking boundary values, mandatory fields, and error handling in user inputs.
+Data Verification: Ensuring the correct information is displayed and processed throughout the shopping journey.
 
-Data Integrity: Ensuring the API returns the correct payloads and HTTP status codes.
+2. Project Objectives
 
-🎯 2. Project Objectives
-
-The primary goal of this capstone is to demonstrate enterprise-level Quality Assurance engineering.
+The primary goal of this capstone is to demonstrate a comprehensive Quality Assurance testing cycle.
 
 |
 
 | Objective | Description |
-| End-to-End Coverage | Achieve 100% execution of 120 test cases across 8 core services. |
-| Maintainability | Implement the Page Object Model (POM) to ensure test scripts survive UI changes. |
-| Speed & Reliability | Utilize Playwright's auto-waiting and parallel execution features for rapid feedback. |
-| Data-Driven Testing | Separate test logic from test data using structured JSON files. |
-| Defect Prevention | Identify UI bugs, logical flaws, and security vulnerabilities (like XSS injections) before deployment. |
+| End-to-End Coverage | Execute 120 test cases across 8 core application services. |
+| Maintainability | Structure test files logically so they are easy to read, update, and manage over time. |
+| Reliability | Create stable tests that provide accurate, consistent feedback on the application's health. |
+| Defect Prevention | Proactively identify user interface bugs and logical workflow errors. |
 
-🧩 3. Application Modules
+3. Application Modules
 
-The custom-built website is divided into 8 distinct micro-services. Each acts as a standalone testing module.
+The e-commerce application is divided into 8 distinct services. Each acts as a standalone testing module.
 
-| Icon | Module Name | Core Functionality Tested |
-| 🔐 | Authentication | User Registration, Login validation, Session tokens, Logout. |
-| 🛍️ | Product | Catalog rendering, Search filtering, Stock status, Responsiveness. |
-| 🛒 | Cart | Adding/Removing items, Price calculations, Persistent storage. |
-| 📍 | Address/Shipping | Address formatting, Zip code validation, Shipping cost calculation. |
-| 👤 | User Profile | Updating personal info, Password resets, Avatar image handling. |
-| 💬 | Customer Support | Contact form submission, Input sanitization, Live chat mockup. |
-| 🔌 | API Internal | Backend data retrieval, POST request validations, Status code checks. |
-| 💳 | Payment | Credit card validation (Luhn algorithm checks), Mock transaction success/failure. |
+| Module Name | Core Functionality Tested |
+| Authentication | User registration, login validation, and logout functionality. |
+| Product | Catalog display, product details, and search functionality. |
+| Cart | Adding or removing items, updating quantities, and price calculations. |
+| Address/Shipping | Address formatting, zip code validation, and shipping costs. |
+| User Profile | Updating personal information and changing passwords. |
+| Customer Support | Contact form submission and required field validation. |
+| API Internal | Verifying the backend successfully sends and receives data. |
+| Payment | Validating credit card number formats and checking success/failure messages. |
 
-📂 4. Framework Folder Structure
+4. Framework Folder Structure
 
-A clean, scalable architecture is the backbone of this QA project. We utilize a strict separation of concerns.
+The project uses a clean, simple directory structure to keep test logic and data organized.
 
-📦 QA-Capstone-Framework
- ┣ 📂 .github/workflows      👉 CI/CD Pipeline configurations
- ┣ 📂 pages                  👉 Page Object Model (POM) Classes
- ┃ ┣ 📜 LoginPage.js         
- ┃ ┣ 📜 CartPage.js          
- ┃ ┗ 📜 CheckoutPage.js      
- ┣ 📂 tests                  👉 Playwright Test Scripts (Specs)
- ┃ ┣ 📜 01_auth.spec.js      
- ┃ ┣ 📜 02_cart.spec.js      
- ┃ ┗ 📜 08_payment.spec.js   
- ┣ 📂 test-data              👉 Mock data for Data-Driven Testing
- ┃ ┣ 📜 valid_users.json     
- ┃ ┗ 📜 cc_numbers.json      
- ┣ 📂 utils                  👉 Reusable helper functions
- ┃ ┗ 📜 data_generator.js    
- ┣ 📂 playwright-report      👉 Auto-generated HTML Test Reports
- ┣ 📜 playwright.config.js   👉 Framework configuration (Browsers, timeouts)
- ┗ 📜 README.md              👉 Framework setup instructions
+QA-Capstone-Framework/
+ ├── pages/              (Organized views of the website pages)
+ ├── tests/              (The actual step-by-step test scripts)
+ ├── test-data/          (Mock information used during testing, like sample users)
+ ├── utils/              (Helper functions to keep tests clean)
+ └── reports/            (Auto-generated documents showing pass/fail results)
 
 
 
-📊 5. Estimated Test Case Average
+5. Estimated Test Case Average
 
-To ensure comprehensive testing without bloat, the test scope is mathematically balanced across the application.
+To ensure comprehensive testing, the scope is evenly balanced across the application.
 
 Total Test Cases Required: 120 Minimum
 
@@ -89,7 +72,7 @@ Total Microservices: 8
 
 Average Distribution: 15 Test Cases per service
 
-📈 Distribution Breakdown:
+Distribution Breakdown:
 
 | Service Module | Positive Scenarios | Negative Scenarios | Boundary/Edge Cases | Total |
 | Authentication | 5 | 7 | 3 | 15 |
@@ -102,10 +85,8 @@ Average Distribution: 15 Test Cases per service
 | Payment | 4 | 8 | 3 | 15 |
 | GRAND TOTAL |  |  |  | 120 |
 
-🚀 6. Conclusion
+6. Conclusion
 
-This Capstone Project represents a full-cycle Quality Assurance lifecycle. By utilizing a self-made web application, we remove external dependencies and network flakiness, allowing for a pure, unhindered demonstration of automated testing capabilities.
+This Capstone Project represents a full Quality Assurance lifecycle. By utilizing a custom-made e-commerce application and a rigorous matrix of 120 test cases, this framework ensures that the MockMart platform is robust and reliable.
 
-Through the power of Playwright, the structured design of the Page Object Model, and a rigorous matrix of 120 test cases, this framework ensures that the MockMart application is robust, reliable, and ready for end-users.
-
-The successful execution of this suite proves readiness for enterprise-level automation roles, showcasing skills in framework architecture, web element manipulation, and quality reporting.
+The successful execution of this suite showcases a clear understanding of testing principles, logical test organization, and effective quality reporting.
