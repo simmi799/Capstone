@@ -1,0 +1,449 @@
+<!-- qa_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QA Automation Capstone: MockMart</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #fafaf9; 
+            color: #292524;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .tree-line::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -1rem;
+            width: 2px;
+            background-color: #e7e5e4;
+        }
+        .tree-node {
+            position: relative;
+        }
+        .tree-node::after {
+            content: '';
+            position: absolute;
+            top: 1.2rem;
+            left: -1rem;
+            width: 0.8rem;
+            height: 2px;
+            background-color: #e7e5e4;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-teal-200 selection:text-teal-900">
+
+    <nav class="sticky top-0 z-50 bg-white border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🚀</span>
+                    <h1 class="text-xl font-bold text-stone-800 tracking-tight">QA Capstone <span class="font-light text-stone-500">| MockMart</span></h1>
+                </div>
+                <div class="flex items-center space-x-1 overflow-x-auto hide-scrollbar" id="nav-container">
+                    <button data-target="overview" class="nav-btn px-4 py-2 rounded-md text-sm font-medium bg-teal-50 text-teal-700 transition-colors">Overview</button>
+                    <button data-target="analytics" class="nav-btn px-4 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors">Test Analytics</button>
+                    <button data-target="modules" class="nav-btn px-4 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors">Service Modules</button>
+                    <button data-target="architecture" class="nav-btn px-4 py-2 rounded-md text-sm font-medium text-stone-600 hover:bg-stone-100 transition-colors">Architecture</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <section id="overview" class="tab-content active">
+            <div class="mb-10 text-center max-w-3xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold text-stone-800 mb-4">Project Overview & Objectives</h2>
+                <p class="text-lg text-stone-600 leading-relaxed">
+                    This dashboard presents the comprehensive Quality Assurance strategy for the <strong>MockMart E-Commerce</strong> platform. The application is a custom-built testing ground designed to demonstrate enterprise-level automation engineering using Playwright and the Page Object Model (POM) pattern.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-stone-500 font-semibold uppercase tracking-wider">Test Coverage</p>
+                        <p class="text-3xl font-bold text-teal-700 mt-1">100%</p>
+                    </div>
+                    <span class="text-4xl opacity-80">🎯</span>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-stone-500 font-semibold uppercase tracking-wider">Total Test Cases</p>
+                        <p class="text-3xl font-bold text-amber-600 mt-1">120</p>
+                    </div>
+                    <span class="text-4xl opacity-80">📋</span>
+                </div>
+                <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-stone-500 font-semibold uppercase tracking-wider">Microservices</p>
+                        <p class="text-3xl font-bold text-indigo-600 mt-1">8</p>
+                    </div>
+                    <span class="text-4xl opacity-80">🧩</span>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-bold text-stone-800 mb-6">Strategic Objectives</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg p-6 border border-stone-200 shadow-sm hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-teal-100 text-teal-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📏</div>
+                    <h4 class="text-lg font-bold text-stone-800 mb-2">End-to-End Coverage</h4>
+                    <p class="text-stone-600 text-sm">Achieve complete execution of 120 test cases meticulously distributed across 8 core e-commerce services.</p>
+                </div>
+                <div class="bg-white rounded-lg p-6 border border-stone-200 shadow-sm hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🏗️</div>
+                    <h4 class="text-lg font-bold text-stone-800 mb-2">Maintainability (POM)</h4>
+                    <p class="text-stone-600 text-sm">Implement strict Page Object Model architecture to ensure test scripts are resilient to UI changes.</p>
+                </div>
+                <div class="bg-white rounded-lg p-6 border border-stone-200 shadow-sm hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">⚡</div>
+                    <h4 class="text-lg font-bold text-stone-800 mb-2">Speed & Reliability</h4>
+                    <p class="text-stone-600 text-sm">Utilize Playwright's auto-waiting capabilities and parallel execution features for rapid, flake-free feedback.</p>
+                </div>
+                <div class="bg-white rounded-lg p-6 border border-stone-200 shadow-sm hover:shadow-md transition-shadow group">
+                    <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">📊</div>
+                    <h4 class="text-lg font-bold text-stone-800 mb-2">Data-Driven Testing</h4>
+                    <p class="text-stone-600 text-sm">Separate dynamic test logic from static test data using structured, externalized JSON files.</p>
+                </div>
+                <div class="bg-white rounded-lg p-6 border border-stone-200 shadow-sm hover:shadow-md transition-shadow group md:col-span-2 lg:col-span-1">
+                    <div class="w-12 h-12 bg-rose-100 text-rose-700 rounded-lg flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">🛡️</div>
+                    <h4 class="text-lg font-bold text-stone-800 mb-2">Defect Prevention</h4>
+                    <p class="text-stone-600 text-sm">Proactively identify UI anomalies, logical business flaws, and vulnerabilities (like XSS) prior to simulated deployment.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="analytics" class="tab-content">
+            <div class="mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-stone-800 mb-4">Test Case Distribution Analytics</h2>
+                <p class="text-lg text-stone-600 max-w-4xl leading-relaxed">
+                    This section visualizes the mathematical balance of our testing scope. To prevent test bloat and ensure comprehensive coverage, exactly 15 test cases are allocated per microservice.
+                </p>
+            </div>
+
+            <div class="bg-white p-6 md:p-8 rounded-xl border border-stone-200 shadow-sm mb-8">
+                <h3 class="text-xl font-bold text-stone-800 mb-6 text-center">Scenario Breakdown per Microservice</h3>
+                <div class="chart-container">
+                    <canvas id="testDistributionChart"></canvas>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-teal-50 border border-teal-100 p-5 rounded-lg">
+                    <h4 class="font-bold text-teal-800 mb-2 flex items-center gap-2"><span class="text-xl">✅</span> Positive Scenarios</h4>
+                    <p class="text-sm text-teal-700">Verifying the system behaves correctly when provided with valid inputs and expected user flows.</p>
+                </div>
+                <div class="bg-rose-50 border border-rose-100 p-5 rounded-lg">
+                    <h4 class="font-bold text-rose-800 mb-2 flex items-center gap-2"><span class="text-xl">⛔</span> Negative Scenarios</h4>
+                    <p class="text-sm text-rose-700">Testing system resilience against invalid inputs, unauthorized access, and incorrect workflows.</p>
+                </div>
+                <div class="bg-amber-50 border border-amber-100 p-5 rounded-lg">
+                    <h4 class="font-bold text-amber-800 mb-2 flex items-center gap-2"><span class="text-xl">⚠️</span> Edge/Boundary Cases</h4>
+                    <p class="text-sm text-amber-700">Pushing the system to its logical limits (e.g., extremely large inputs, zero values, timeout limits).</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="modules" class="tab-content">
+            <div class="mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-stone-800 mb-4">Application Modules Scope</h2>
+                <p class="text-lg text-stone-600 max-w-4xl leading-relaxed">
+                    The MockMart platform is segmented into 8 distinct, testable microservices. Select any module below to view its core functionality focus.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-8">
+                <div class="w-full lg:w-1/3 grid grid-cols-2 lg:grid-cols-1 gap-3" id="module-selector">
+                </div>
+                
+                <div class="w-full lg:w-2/3">
+                    <div id="module-details" class="bg-white p-8 rounded-xl border border-stone-200 shadow-sm h-full flex flex-col justify-center min-h-[400px]">
+                        <div class="text-center text-stone-400">
+                            <span class="text-6xl mb-4 block">👆</span>
+                            <p class="text-xl font-medium">Select a module from the menu to explore its testing scope.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="tab-content">
+            <div class="mb-8">
+                <h2 class="text-3xl md:text-4xl font-bold text-stone-800 mb-4">Framework Architecture & Execution</h2>
+                <p class="text-lg text-stone-600 max-w-4xl leading-relaxed">
+                    A clean, scalable architecture is the backbone of this QA project. We utilize a strict Page Object Model (POM), keeping page locators separate from test logic, and test data separate from test scripts.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="bg-stone-800 text-stone-300 p-6 rounded-xl font-mono text-sm shadow-lg overflow-x-auto relative">
+                    <div class="absolute top-0 right-0 bg-stone-700 text-stone-200 text-xs px-3 py-1 rounded-bl-lg font-sans">Directory Structure</div>
+                    <div class="mt-4">
+                        <div class="font-bold text-white mb-2">📦 mockmart-automation</div>
+                        <div class="relative ml-4 pl-4 tree-line">
+                            <div class="tree-node py-1">📂 .github/workflows <span class="text-stone-500 ml-2">👉 CI/CD Pipeline</span>
+                                <div class="relative ml-4 pl-4 tree-line mt-1">
+                                    <div class="tree-node py-1 text-white">📜 playwright.yml</div>
+                                </div>
+                            </div>
+                            <div class="tree-node py-1 mt-1">📂 pages <span class="text-stone-500 ml-2">👉 Page Object Model (POM)</span>
+                                <div class="relative ml-4 pl-4 tree-line mt-1">
+                                    <div class="tree-node py-1 text-teal-400">📜 LoginPage.js</div>
+                                    <div class="tree-node py-1 text-teal-400">📜 HomePage.js</div>
+                                    <div class="tree-node py-1 text-teal-400">📜 CartPage.js</div>
+                                    <div class="tree-node py-1 text-teal-400">📜 CheckoutPage.js</div>
+                                    <div class="tree-node py-1 text-teal-400">📜 ProfilePage.js</div>
+                                    <div class="tree-node py-1 text-teal-400">📜 SupportPage.js</div>
+                                </div>
+                            </div>
+                            <div class="tree-node py-1 mt-1">📂 tests <span class="text-stone-500 ml-2">👉 Playwright Specs</span>
+                                <div class="relative ml-4 pl-4 tree-line mt-1">
+                                    <div class="tree-node py-1 text-amber-400">📜 auth.spec.js</div>
+                                    <div class="tree-node py-1 text-amber-400">📜 product.spec.js</div>
+                                    <div class="tree-node py-1 text-amber-400">📜 cart.spec.js</div>
+                                    <div class="tree-node py-1 text-amber-400">📜 shipping.spec.js</div>
+                                    <div class="tree-node py-1 text-amber-400">📜 profile.spec.js</div>
+                                    <div class="tree-node py-1 text-amber-400">📜 support.spec.js</div>
+                                    <div class="tree-node py-1 text-amber-400">📜 api.spec.js</div>
+                                    <div class="tree-node py-1 text-amber-400">📜 payment.spec.js</div>
+                                </div>
+                            </div>
+                            <div class="tree-node py-1 mt-1">📂 test-data <span class="text-stone-500 ml-2">👉 Mock JSON Data</span>
+                                <div class="relative ml-4 pl-4 tree-line mt-1">
+                                    <div class="tree-node py-1 text-indigo-400">📜 users.json</div>
+                                    <div class="tree-node py-1 text-indigo-400">📜 test-products.json</div>
+                                </div>
+                            </div>
+                            <div class="tree-node py-1 mt-1">📂 utils <span class="text-stone-500 ml-2">👉 Helper Functions</span>
+                                <div class="relative ml-4 pl-4 tree-line mt-1">
+                                    <div class="tree-node py-1 text-indigo-400">📜 api-helpers.js</div>
+                                    <div class="tree-node py-1 text-indigo-400">📜 data-generator.js</div>
+                                </div>
+                            </div>
+                            <div class="tree-node py-1 mt-1">📂 playwright-report <span class="text-stone-500 ml-2">👉 HTML Reports</span>
+                                <div class="relative ml-4 pl-4 tree-line mt-1">
+                                    <div class="tree-node py-1 text-white">📜 index.html</div>
+                                </div>
+                            </div>
+                             <div class="tree-node py-1 mt-1">📂 test-results <span class="text-stone-500 ml-2">👉 Artifacts</span></div>
+                            <div class="tree-node py-1 mt-1 text-pink-400">📜 playwright.config.js <span class="text-stone-500 ml-2">👉 Global Config</span></div>
+                            <div class="tree-node py-1 mt-1 text-white">📜 package.json</div>
+                            <div class="tree-node py-1 mt-1 text-white">📜 package-lock.json</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-6">
+                    <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm">
+                        <h3 class="text-xl font-bold text-stone-800 mb-4 flex items-center gap-2">🛠️ Tech Stack</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium border border-stone-300">Playwright</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium border border-stone-300">JavaScript</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium border border-stone-300">Page Object Model</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium border border-stone-300">Playwright Test Runner</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium border border-stone-300">HTML Reporter</span>
+                            <span class="px-3 py-1 bg-stone-100 text-stone-700 rounded-full text-sm font-medium border border-stone-300">GitHub Actions CI/CD</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl border border-stone-200 shadow-sm flex-grow">
+                        <h3 class="text-xl font-bold text-stone-800 mb-4 flex items-center gap-2">🚀 Execution Commands</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm font-semibold text-stone-600 mb-1">Run all tests (Headless):</p>
+                                <code class="block bg-stone-50 border border-stone-200 p-2 rounded text-sm text-pink-600 select-all">npx playwright test</code>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-stone-600 mb-1">Run in UI Mode:</p>
+                                <code class="block bg-stone-50 border border-stone-200 p-2 rounded text-sm text-pink-600 select-all">npx playwright test --ui</code>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-stone-600 mb-1">Run specific suite (e.g., Auth):</p>
+                                <code class="block bg-stone-50 border border-stone-200 p-2 rounded text-sm text-pink-600 select-all">npx playwright test tests/auth.spec.js</code>
+                            </div>
+                            <div>
+                                <p class="text-sm font-semibold text-stone-600 mb-1">View HTML Report:</p>
+                                <code class="block bg-stone-50 border border-stone-200 p-2 rounded text-sm text-pink-600 select-all">npx playwright show-report</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const moduleData = [
+            { id: 'auth', icon: '🔐', name: 'Authentication', desc: 'User Registration, Login validation, Session tokens, Logout handling.', pos: 5, neg: 7, edge: 3 },
+            { id: 'prod', icon: '🛍️', name: 'Product', desc: 'Catalog rendering, Search filtering, Stock status updates, UI responsiveness.', pos: 8, neg: 4, edge: 3 },
+            { id: 'cart', icon: '🛒', name: 'Cart', desc: 'Adding/Removing items, Price calculations, Persistent session storage.', pos: 6, neg: 6, edge: 3 },
+            { id: 'ship', icon: '📍', name: 'Address/Shipping', desc: 'Address formatting, Zip code validation, Dynamic shipping cost calculation.', pos: 5, neg: 7, edge: 3 },
+            { id: 'prof', icon: '👤', name: 'User Profile', desc: 'Updating personal info, Password resets, Avatar image handling & access control.', pos: 7, neg: 5, edge: 3 },
+            { id: 'supp', icon: '💬', name: 'Customer Support', desc: 'Contact form submission, Input sanitization, Live chat mockup interactions.', pos: 6, neg: 6, edge: 3 },
+            { id: 'api',  icon: '🔌', name: 'API Internal', desc: 'Backend data retrieval (GET/POST), Status code validations, Data integrity.', pos: 10, neg: 5, edge: 0 },
+            { id: 'pay',  icon: '💳', name: 'Payment', desc: 'Credit card validation (Luhn algorithm), Mock transaction success/failure states.', pos: 4, neg: 8, edge: 3 }
+        ];
+
+        const navBtns = document.querySelectorAll('.nav-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        let chartInstance = null;
+
+        function switchTab(targetId) {
+            navBtns.forEach(btn => {
+                if (btn.dataset.target === targetId) {
+                    btn.classList.remove('text-stone-600', 'hover:bg-stone-100');
+                    btn.classList.add('bg-teal-50', 'text-teal-700');
+                } else {
+                    btn.classList.add('text-stone-600', 'hover:bg-stone-100');
+                    btn.classList.remove('bg-teal-50', 'text-teal-700');
+                }
+            });
+
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === targetId) {
+                    content.classList.add('active');
+                }
+            });
+
+            if (targetId === 'analytics' && !chartInstance) {
+                renderChart();
+            }
+        }
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => switchTab(btn.dataset.target));
+        });
+
+        function renderChart() {
+            const ctx = document.getElementById('testDistributionChart').getContext('2d');
+            const labels = moduleData.map(m => m.name);
+            const posData = moduleData.map(m => m.pos);
+            const negData = moduleData.map(m => m.neg);
+            const edgeData = moduleData.map(m => m.edge);
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        { label: 'Positive Scenarios', data: posData, backgroundColor: '#0f766e' },
+                        { label: 'Negative Scenarios', data: negData, backgroundColor: '#be123c' },
+                        { label: 'Edge/Boundary', data: edgeData, backgroundColor: '#d97706' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { font: { family: 'Inter' } } },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            titleFont: { family: 'Inter', size: 14 },
+                            bodyFont: { family: 'Inter' }
+                        }
+                    },
+                    scales: {
+                        x: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Inter' } } },
+                        y: { stacked: true, beginAtZero: true, max: 15, title: { display: true, text: 'Number of Test Cases', font: { family: 'Inter' } } }
+                    }
+                }
+            });
+        }
+
+        const moduleSelector = document.getElementById('module-selector');
+        const moduleDetails = document.getElementById('module-details');
+
+        function renderModuleList() {
+            moduleData.forEach((mod, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full text-left px-4 py-3 rounded-lg border border-stone-200 bg-white hover:bg-stone-50 transition-colors flex items-center gap-3 focus:outline-none focus:ring-2 focus:ring-teal-500 module-btn';
+                btn.dataset.index = index;
+                btn.innerHTML = `<span class="text-2xl">${mod.icon}</span> <span class="font-medium text-stone-800">${mod.name}</span>`;
+                btn.addEventListener('click', () => selectModule(index, btn));
+                moduleSelector.appendChild(btn);
+            });
+        }
+
+        function selectModule(index, activeBtn) {
+            document.querySelectorAll('.module-btn').forEach(b => {
+                b.classList.remove('bg-teal-50', 'border-teal-200', 'shadow-inner');
+                b.classList.add('bg-white', 'border-stone-200');
+            });
+            activeBtn.classList.remove('bg-white', 'border-stone-200');
+            activeBtn.classList.add('bg-teal-50', 'border-teal-200', 'shadow-inner');
+
+            const mod = moduleData[index];
+            moduleDetails.innerHTML = `
+                <div class="flex items-center gap-4 mb-6 pb-6 border-b border-stone-100">
+                    <div class="w-16 h-16 bg-white border border-stone-200 rounded-2xl flex items-center justify-center text-3xl shadow-sm">${mod.icon}</div>
+                    <div>
+                        <h3 class="text-2xl font-bold text-stone-800">${mod.name} Service</h3>
+                        <span class="inline-block mt-1 px-2 py-1 bg-stone-100 text-stone-600 text-xs font-semibold rounded uppercase tracking-wider">Module Under Test</span>
+                    </div>
+                </div>
+                
+                <div class="mb-8">
+                    <h4 class="text-sm font-bold text-stone-500 uppercase tracking-wider mb-2">Core Functionality Tested</h4>
+                    <p class="text-lg text-stone-800 leading-relaxed">${mod.desc}</p>
+                </div>
+                
+                <div>
+                    <h4 class="text-sm font-bold text-stone-500 uppercase tracking-wider mb-4">Test Case Distribution (Total: 15)</h4>
+                    <div class="grid grid-cols-3 gap-4">
+                        <div class="bg-teal-50 border border-teal-100 p-4 rounded-lg text-center">
+                            <span class="block text-2xl font-bold text-teal-700">${mod.pos}</span>
+                            <span class="text-xs text-teal-800 font-medium uppercase tracking-wide">Positive</span>
+                        </div>
+                        <div class="bg-rose-50 border border-rose-100 p-4 rounded-lg text-center">
+                            <span class="block text-2xl font-bold text-rose-700">${mod.neg}</span>
+                            <span class="text-xs text-rose-800 font-medium uppercase tracking-wide">Negative</span>
+                        </div>
+                        <div class="bg-amber-50 border border-amber-100 p-4 rounded-lg text-center">
+                            <span class="block text-2xl font-bold text-amber-700">${mod.edge}</span>
+                            <span class="text-xs text-amber-800 font-medium uppercase tracking-wide">Edge</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        renderModuleList();
+    </script>
+</body>
+</html>
