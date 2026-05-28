@@ -1,0 +1,12 @@
+node_modules/
+playwright-report/
+test-results/
+automation-results/
+screenshots/failed/
+.reference-capstone/
+
+# Playwright
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth/

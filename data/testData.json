@@ -1,0 +1,27 @@
+{
+  "users": {
+    "valid": { "email": "student@example.com", "password": "Password123" },
+    "persistent": { "email": "persist@example.com", "password": "Password123" }
+  },
+  "shipping": {
+    "name": "Simmi Student",
+    "address": "221 Test Street",
+    "city": "Kolkata",
+    "state": "West Bengal",
+    "zip": "700001",
+    "method": "express"
+  },
+  "payment": {
+    "cardName": "Simmi Kumari",
+    "cardNumber": "4111111111111111",
+    "expiry": "12/30",
+    "cvv": "123"
+  },
+  "support": {
+    "name": "Support User",
+    "email": "support@example.com",
+    "subject": "Need help with order",
+    "message": "My order needs manual review today.",
+    "priority": "high"
+  }
+}

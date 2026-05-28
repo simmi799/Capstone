@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SimpleShop Automation Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #222;
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+        nav {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .container {
+            max-width: 1180px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            min-width: 180px;
+            font: inherit;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            background: #fff;
+        }
+        .product-card img {
+            width: 150px;
+            height: 110px;
+            object-fit: cover;
+            background: #e8e8e8;
+        }
+        .meta {
+            color: #666;
+            font-size: 14px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 3px;
+            margin: 4px;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .secondary {
+            background: #555;
+        }
+        .secondary:hover {
+            background: #444;
+        }
+        .danger {
+            background: #b83232;
+        }
+        .danger:hover {
+            background: #982929;
+        }
+        section {
+            display: none;
+        }
+        #products {
+            display: block;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin: 12px 0;
+        }
+        .stack {
+            display: grid;
+            gap: 10px;
+            max-width: 720px;
+        }
+        .notice {
+            color: #155724;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        .error {
+            color: #721c24;
+            background: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 12px 0;
+        }
+        th, td {
+            border-bottom: 1px solid #e0e0e0;
+            padding: 10px;
+            text-align: left;
+        }
+        .qty {
+            width: 64px;
+            min-width: 64px;
+        }
+        footer {
+            max-width: 1180px;
+            margin: 0 auto 24px;
+            color: #666;
+            font-size: 13px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>SimpleShop</h1>
+        <nav aria-label="Main navigation">
+            <a href="#" data-nav="products">Home</a>
+            <a href="#" data-nav="auth-view" id="nav-login">Login</a>
+            <a href="#" data-nav="profile-view" id="nav-profile" style="display:none;">Profile</a>
+            <a href="#" data-nav="support-view">Support</a>
+            <a href="#" data-nav="cart-view">Cart (<span id="cart-count">0</span>)</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section id="products">
+            <h2>Products</h2>
+            <div class="toolbar">
+                <input type="search" id="search" placeholder="Search products" aria-label="Search products">
+                <select id="category-filter" aria-label="Filter category">
+                    <option value="all">All categories</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="accessories">Accessories</option>
+                    <option value="home">Home</option>
+                </select>
+                <button id="search-button">Search</button>
+                <button class="secondary" id="clear-search">Clear</button>
+            </div>
+            <div id="product-list" class="products"></div>
+            <div id="product-detail" class="notice"></div>
+        </section>
+
+        <section id="auth-view">
+            <h2>Account Login</h2>
+            <div class="stack">
+                <input type="email" id="login-email" placeholder="Email">
+                <input type="password" id="login-password" placeholder="Password">
+                <button id="login-button">Login</button>
+                <button class="secondary" id="signup-button">Create Account</button>
+                <div id="auth-message" class="notice"></div>
+            </div>
+        </section>
+
+        <section id="cart-view">
+            <h2>Shopping Cart</h2>
+            <div id="empty-cart-message">Your cart is empty.</div>
+            <table id="cart-table" style="display:none;">
+                <thead>
+                    <tr><th>Product</th><th>Qty</th><th>Price</th><th>Total</th><th>Action</th></tr>
+                </thead>
+                <tbody id="cart-items"></tbody>
+            </table>
+            <p><strong>Subtotal:</strong> $<span id="cart-subtotal">0.00</span></p>
+            <button id="continue-shopping">Continue Shopping</button>
+            <button id="checkout-button">Proceed to Checkout</button>
+            <button class="danger" id="clear-cart">Clear Cart</button>
+        </section>
+
+        <section id="shipping-view">
+            <h2>Shipping Address</h2>
+            <div class="form-grid">
+                <input type="text" id="ship-name" placeholder="Full Name">
+                <input type="text" id="address" placeholder="Full Address">
+                <input type="text" id="city" placeholder="City">
+                <input type="text" id="state" placeholder="State">
+                <input type="text" id="zip" placeholder="Zip Code">
+                <select id="shipping-method">
+                    <option value="standard">Standard Shipping</option>
+                    <option value="express">Express Shipping</option>
+                </select>
+            </div>
+            <button id="save-address">Save Address</button>
+            <button id="to-payment">Continue to Payment</button>
+            <div id="shipping-message" class="notice"></div>
+        </section>
+
+        <section id="payment-view">
+            <h2>Payment</h2>
+            <div class="form-grid">
+                <input type="text" id="card-name" placeholder="Name on Card">
+                <input type="text" id="card-number" placeholder="Card Number">
+                <input type="text" id="card-expiry" placeholder="MM/YY">
+                <input type="text" id="card-cvv" placeholder="CVV">
+                <select id="payment-method">
+                    <option value="card">Card</option>
+                    <option value="cod">Cash on Delivery</option>
+                </select>
+            </div>
+            <button id="pay-button">Pay Now</button>
+            <div id="payment-message" class="notice"></div>
+        </section>
+
+        <section id="profile-view">
+            <h2>User Profile</h2>
+            <p>Welcome, <span id="user-display-name">User</span>!</p>
+            <div class="form-grid">
+                <input type="text" id="profile-name" placeholder="Display Name">
+                <input type="tel" id="profile-phone" placeholder="Phone">
+                <input type="email" id="profile-email" placeholder="Email">
+            </div>
+            <button id="save-profile">Save Profile</button>
+            <button class="secondary" id="load-profile">Load Profile</button>
+            <button class="danger" id="logout-button">Logout</button>
+            <div id="profile-message" class="notice"></div>
+        </section>
+
+        <section id="support-view">
+            <h2>Customer Support</h2>
+            <div class="stack">
+                <input type="text" id="support-name" placeholder="Name">
+                <input type="email" id="support-email" placeholder="Email">
+                <input type="text" id="support-subject" placeholder="Subject">
+                <textarea id="support-message" placeholder="Message"></textarea>
+                <select id="support-priority">
+                    <option value="normal">Normal</option>
+                    <option value="high">High</option>
+                </select>
+                <button id="support-submit">Submit Ticket</button>
+                <div id="support-result" class="notice"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer id="site-footer">SimpleShop test store for Playwright automation.</footer>
+
+    <script>
+        const products = [
+            { id: 1, name: 'Product 1', price: 19.99, category: 'electronics', brand: 'Simmi', stock: 9, rating: 4.2 },
+            { id: 2, name: 'Product 2', price: 29.99, category: 'accessories', brand: 'Capstone', stock: 6, rating: 4.5 },
+            { id: 3, name: 'Product 3', price: 39.99, category: 'home', brand: 'SimpleShop', stock: 4, rating: 4.8 }
+        ];
+
+        const state = {
+            cart: JSON.parse(localStorage.getItem('cart') || '[]'),
+            user: JSON.parse(localStorage.getItem('userProfile') || 'null'),
+            isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+            lastOrder: JSON.parse(localStorage.getItem('lastOrder') || 'null')
+        };
+
+        const money = value => Number(value).toFixed(2);
+        const byId = id => document.getElementById(id);
+
+        function saveCart() {
+            localStorage.setItem('cart', JSON.stringify(state.cart));
+        }
+
+        function showMessage(id, text, isError = false) {
+            const el = byId(id);
+            el.textContent = text;
+            el.className = isError ? 'notice error' : 'notice';
+            el.style.display = 'block';
+        }
+
+        function showSection(id) {
+            ['products', 'auth-view', 'cart-view', 'shipping-view', 'payment-view', 'profile-view', 'support-view'].forEach(sec => {
+                byId(sec).style.display = sec === id ? 'block' : 'none';
+            });
+            if (id === 'cart-view') renderCart();
+        }
+
+        function renderProducts(items = products) {
+            const list = byId('product-list');
+            list.innerHTML = '';
+            items.forEach(product => {
+                const card = document.createElement('article');
+                card.className = 'product-card';
+                card.dataset.productId = product.id;
+                card.innerHTML = `
+                    <img src="https://dummyimage.com/300x220/e8e8e8/333&text=${encodeURIComponent(product.name)}" alt="${product.name}">
+                    <h3>${product.name}</h3>
+                    <p class="meta">${product.brand} | ${product.category}</p>
+                    <p>$${money(product.price)}</p>
+                    <p class="meta">Stock: <span data-stock="${product.id}">${product.stock}</span> | Rating: ${product.rating}</p>
+                    <button data-action="details" data-id="${product.id}">Details</button>
+                    <button data-action="add" data-id="${product.id}">Add to Cart</button>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        function searchProducts() {
+            const text = byId('search').value.trim().toLowerCase();
+            const category = byId('category-filter').value;
+            const filtered = products.filter(product => {
+                const matchesText = !text || product.name.toLowerCase().includes(text) || product.brand.toLowerCase().includes(text);
+                const matchesCategory = category === 'all' || product.category === category;
+                return matchesText && matchesCategory;
+            });
+            renderProducts(filtered);
+            return filtered;
+        }
+
+        function showProductDetails(id) {
+            const product = products.find(item => item.id === Number(id));
+            showMessage('product-detail', `${product.name} by ${product.brand}: $${money(product.price)}, ${product.stock} in stock, ${product.rating} rating.`);
+        }
+
+        function addToCart(id) {
+            const product = products.find(item => item.id === Number(id));
+            const existing = state.cart.find(item => item.id === product.id);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                state.cart.push({ id: product.id, qty: 1 });
+            }
+            saveCart();
+            renderCartCount();
+        }
+
+        function removeFromCart(id) {
+            state.cart = state.cart.filter(item => item.id !== Number(id));
+            saveCart();
+            renderCart();
+        }
+
+        function updateQty(id, qty) {
+            const item = state.cart.find(entry => entry.id === Number(id));
+            if (item) item.qty = Math.max(1, Number(qty) || 1);
+            saveCart();
+            renderCart();
+        }
+
+        function renderCartCount() {
+            byId('cart-count').textContent = state.cart.reduce((sum, item) => sum + item.qty, 0);
+        }
+
+        function renderCart() {
+            renderCartCount();
+            const body = byId('cart-items');
+            body.innerHTML = '';
+            let subtotal = 0;
+            state.cart.forEach(item => {
+                const product = products.find(entry => entry.id === item.id);
+                const total = product.price * item.qty;
+                subtotal += total;
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.name}</td>
+                    <td><input class="qty" data-qty="${item.id}" type="number" min="1" value="${item.qty}"></td>
+                    <td>$${money(product.price)}</td>
+                    <td>$${money(total)}</td>
+                    <td><button class="danger" data-action="remove" data-id="${item.id}">Remove</button></td>
+                `;
+                body.appendChild(row);
+            });
+            byId('cart-subtotal').textContent = money(subtotal);
+            byId('empty-cart-message').style.display = state.cart.length ? 'none' : 'block';
+            byId('cart-table').style.display = state.cart.length ? 'table' : 'none';
+        }
+
+        function login(createAccount = false) {
+            const email = byId('login-email').value.trim();
+            const password = byId('login-password').value.trim();
+            if (!email.includes('@') || password.length < 6) {
+                showMessage('auth-message', 'Please enter a valid email and password.', true);
+                return false;
+            }
+            state.isLoggedIn = true;
+            state.user = state.user || { name: email.split('@')[0], email, phone: '' };
+            state.user.email = email;
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('currentUser', state.user.name);
+            localStorage.setItem('userProfile', JSON.stringify(state.user));
+            updateAuthUi();
+            showMessage('auth-message', createAccount ? 'Account created successfully.' : 'Login successful.');
+            return true;
+        }
+
+        function logout() {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('currentUser');
+            state.isLoggedIn = false;
+            updateAuthUi();
+            showSection('products');
+        }
+
+        function updateAuthUi() {
+            byId('nav-login').style.display = state.isLoggedIn ? 'none' : 'inline';
+            byId('nav-profile').style.display = state.isLoggedIn ? 'inline' : 'none';
+            byId('user-display-name').textContent = localStorage.getItem('currentUser') || 'User';
+            loadProfile();
+        }
+
+        function saveProfile() {
+            state.user = {
+                name: byId('profile-name').value.trim() || 'User',
+                phone: byId('profile-phone').value.trim(),
+                email: byId('profile-email').value.trim()
+            };
+            localStorage.setItem('userProfile', JSON.stringify(state.user));
+            localStorage.setItem('currentUser', state.user.name);
+            byId('user-display-name').textContent = state.user.name;
+            showMessage('profile-message', 'Profile saved.');
+        }
+
+        function loadProfile() {
+            const profile = JSON.parse(localStorage.getItem('userProfile') || 'null') || { name: '', phone: '', email: '' };
+            byId('profile-name').value = profile.name || '';
+            byId('profile-phone').value = profile.phone || '';
+            byId('profile-email').value = profile.email || '';
+        }
+
+        function saveAddress() {
+            const address = {
+                name: byId('ship-name').value.trim(),
+                address: byId('address').value.trim(),
+                city: byId('city').value.trim(),
+                state: byId('state').value.trim(),
+                zip: byId('zip').value.trim(),
+                method: byId('shipping-method').value
+            };
+            if (!address.name || !address.address || !address.city || !/^\d{5,6}$/.test(address.zip)) {
+                showMessage('shipping-message', 'Please enter a complete shipping address.', true);
+                return false;
+            }
+            localStorage.setItem('shippingAddress', JSON.stringify(address));
+            showMessage('shipping-message', 'Shipping address saved.');
+            return true;
+        }
+
+        function submitPayment() {
+            const method = byId('payment-method').value;
+            const cardNumber = byId('card-number').value.replace(/\s/g, '');
+            if (method === 'card' && !/^\d{16}$/.test(cardNumber)) {
+                showMessage('payment-message', 'Please enter a valid 16 digit card number.', true);
+                return false;
+            }
+            const order = {
+                id: `ORD-${Date.now()}`,
+                total: byId('cart-subtotal').textContent,
+                method,
+                status: 'paid'
+            };
+            state.lastOrder = order;
+            state.cart = [];
+            saveCart();
+            localStorage.setItem('lastOrder', JSON.stringify(order));
+            renderCart();
+            showMessage('payment-message', `Payment successful. Order ${order.id} created.`);
+            return true;
+        }
+
+        function submitSupport() {
+            const ticket = {
+                name: byId('support-name').value.trim(),
+                email: byId('support-email').value.trim(),
+                subject: byId('support-subject').value.trim(),
+                message: byId('support-message').value.trim(),
+                priority: byId('support-priority').value
+            };
+            if (!ticket.name || !ticket.email.includes('@') || !ticket.subject || ticket.message.length < 10) {
+                showMessage('support-result', 'Please complete all support fields.', true);
+                return false;
+            }
+            const tickets = JSON.parse(localStorage.getItem('supportTickets') || '[]');
+            tickets.push({ ...ticket, id: `TICKET-${tickets.length + 1}` });
+            localStorage.setItem('supportTickets', JSON.stringify(tickets));
+            showMessage('support-result', `Ticket ${tickets[tickets.length - 1].id} submitted.`);
+            return true;
+        }
+
+        window.shopApi = {
+            listProducts: () => Promise.resolve({ status: 200, data: products }),
+            getProduct: id => Promise.resolve({ status: 200, data: products.find(product => product.id === Number(id)) || null }),
+            getCart: () => Promise.resolve({ status: 200, data: state.cart }),
+            createTicket: ticket => Promise.resolve({ status: 201, data: { ...ticket, id: 'API-TICKET-1' } }),
+            createPayment: payment => Promise.resolve({ status: payment.amount > 0 ? 201 : 400, data: { approved: payment.amount > 0 } })
+        };
+
+        document.querySelectorAll('[data-nav]').forEach(link => {
+            link.addEventListener('click', event => {
+                event.preventDefault();
+                showSection(link.dataset.nav);
+            });
+        });
+
+        byId('product-list').addEventListener('click', event => {
+            const button = event.target.closest('button');
+            if (!button) return;
+            if (button.dataset.action === 'add') addToCart(button.dataset.id);
+            if (button.dataset.action === 'details') showProductDetails(button.dataset.id);
+        });
+        byId('cart-items').addEventListener('click', event => {
+            const button = event.target.closest('button');
+            if (button?.dataset.action === 'remove') removeFromCart(button.dataset.id);
+        });
+        byId('cart-items').addEventListener('change', event => {
+            if (event.target.matches('[data-qty]')) updateQty(event.target.dataset.qty, event.target.value);
+        });
+        byId('search-button').addEventListener('click', searchProducts);
+        byId('clear-search').addEventListener('click', () => {
+            byId('search').value = '';
+            byId('category-filter').value = 'all';
+            renderProducts();
+        });
+        byId('login-button').addEventListener('click', () => login(false));
+        byId('signup-button').addEventListener('click', () => login(true));
+        byId('logout-button').addEventListener('click', logout);
+        byId('save-profile').addEventListener('click', saveProfile);
+        byId('load-profile').addEventListener('click', loadProfile);
+        byId('continue-shopping').addEventListener('click', () => showSection('products'));
+        byId('checkout-button').addEventListener('click', () => showSection('shipping-view'));
+        byId('clear-cart').addEventListener('click', () => {
+            state.cart = [];
+            saveCart();
+            renderCart();
+        });
+        byId('save-address').addEventListener('click', saveAddress);
+        byId('to-payment').addEventListener('click', () => {
+            if (saveAddress()) showSection('payment-view');
+        });
+        byId('pay-button').addEventListener('click', submitPayment);
+        byId('support-submit').addEventListener('click', submitSupport);
+
+        renderProducts();
+        renderCartCount();
+        updateAuthUi();
+    </script>
+</body>
+</html>
