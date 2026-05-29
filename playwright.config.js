@@ -13,6 +13,7 @@ export default defineConfig({
     ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
   use: {
+    headless: process.env.CI ? true : false,
     baseURL: 'https://simmi799.github.io/Capstone/',
     headless: false,
     screenshot: 'off',
