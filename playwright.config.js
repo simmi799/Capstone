@@ -3,6 +3,12 @@ import { defineConfig, devices } from '@playwright/test';
 export default defineConfig({
   testDir: './tests',
   globalSetup: './utils/globalSetup.js',
+  webServer: {
+    command: 'npm run start',
+    url: 'http://127.0.0.1:4173',
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000
+  },
   fullyParallel: false,
   workers: 1,
   timeout: 300000,
@@ -13,9 +19,8 @@ export default defineConfig({
     ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
   use: {
-    headless: process.env.CI ? true : false,
-    baseURL: 'https://simmi799.github.io/Capstone/',
-    headless: false,
+    baseURL: process.env.BASE_URL || 'http://127.0.0.1:4173',
+    headless: !!process.env.CI,
     screenshot: 'off',
     trace: 'retain-on-failure',
     video: 'off'

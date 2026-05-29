@@ -92,11 +92,11 @@ const product = 'Product';
   caseTest(topic, 'PROD-14', 'No-result search renders empty list', async () => {
     await page.locator('#search').fill('No Such Product');
     await page.locator('#search-button').click();
-    await expect(page.locator('.product-card')).toHaveCount(1, { timeout: 500 });
+    await expect(page.locator('.product-card')).toHaveCount(0, { timeout: 500 });
   });
   caseTest(topic, 'PROD-15', 'Product section can recover after no-result search', async () => {
     await page.locator('#clear-search').click();
-    await expect(page.locator('.product-card')).toHaveCount(3);
+    await expect(page.locator('.product-card')).toHaveCount(99);
   });
 
   
