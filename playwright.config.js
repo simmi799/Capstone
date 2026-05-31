@@ -9,7 +9,7 @@ export default defineConfig({
     reuseExistingServer: !process.env.CI,
     timeout: 120000
   },
-  fullyParallel: false,
+  fullyParallel: true,
   workers: 1,
   timeout: 300000,
   expect: { timeout: 8000 },
