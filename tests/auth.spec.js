@@ -94,6 +94,4 @@ const auth = 'Authentication';
   caseTest(topic, 'AUTH-15', 'Logout returns user to product section', async () => {
     await expect(page.locator('#products')).toBeVisible();
   });
-
-  
 });

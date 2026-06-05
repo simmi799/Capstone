@@ -86,6 +86,4 @@ const api = 'API Internal';
     await page.reload();
     await expect.poll(() => page.evaluate(() => typeof window.shopApi.listProducts)).toBe('function');
   });
-
-  
 });
